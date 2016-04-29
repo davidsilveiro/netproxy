@@ -5,7 +5,7 @@ import json
 import re
 import string
 import random
-import urllib2
+from urllib2 import urlopen
 
 
 def main(external_ip=None, config_file=None):
@@ -14,7 +14,7 @@ def main(external_ip=None, config_file=None):
     else:
         # Download TSDU's config.json.
         print("Downloading configuration...")
-        json_config = urllib2.urlopen("https://raw.githubusercontent.com/trick77/tunlr-style-dns-unblocking/master/config.json").read()
+        json_config = urlopen("https://raw.githubusercontent.com/trick77/tunlr-style-dns-unblocking/master/config.json").read()
     # Remove comments.
     json_config = re.sub("//.*", "", json_config, re.MULTILINE)
     config = json.loads(json_config)
@@ -23,7 +23,7 @@ def main(external_ip=None, config_file=None):
         # Add our IP.
         try:
             print("Autodetecting external IP address...")
-            external_ip = urllib2.urlopen("http://checkip.dyndns.org/").read()
+            external_ip = urlopen("http://checkip.dyndns.org/").read()
             external_ip = re.search("IP Address: (.*?)<", external_ip).group(1)
             print("Detected external IP as %s, using that. If it's wrong, please replace it in config.json before building." % external_ip)
         except:
